@@ -4,22 +4,18 @@ let Note = require('../models/note.model');
 // Get all notes by a single user
 router.route('/byuser/:id').get((req, res) => {
 	Note.find(({ userId: req.params.id })).sort({ updatedAt: -1 })
-		.then(notes => res.json(notes))
-		.catch(err => res.status(400).json('Error: ' + err));
-});
-
-// Get single note by ID
-router.route('/:id').get((req, res) => {
-	Note.findById(req.params.id)
-		.then(note => res.json(note))
+		.then(notes => {
+			res.json(notes);
+			console.log('> got notes for ' + req.user.username);
+		})
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
 // Add note
 router.route('/add').post((req, res) => {
-	const userId = req.body.userId;
+
+	const { userId, content } = req.body;
 	const title = req.body.title ? req.body.title : 'Untitled';
-	const content = req.body.content;
 
 	const newNote = new Note({
 		userId,
@@ -28,7 +24,10 @@ router.route('/add').post((req, res) => {
 	});
 
 	newNote.save()
-		.then(() => res.json(newNote.id))
+		.then(() => {
+			res.json(newNote);
+			console.log('> ' + req.user.username + ' created a new note');
+		})
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -41,7 +40,10 @@ router.route('/update/:id').put((req, res) => {
 			note.content = req.body.content;
 
 			note.save()
-				.then(() => res.json('Note updated!'))
+				.then(() => {
+					res.json('Note updated!');
+					console.log('> ' + req.user.username + ' updated a note');
+				})
 				.catch(err => res.status(400).json('Error: ' + err));
 		})
 		.catch(err => res.status(400).json('Error: ' + err));
@@ -50,7 +52,10 @@ router.route('/update/:id').put((req, res) => {
 // Delete note
 router.route('/delete/:id').delete((req, res) => {
 	Note.findByIdAndDelete(req.params.id)
-		.then(() => res.json('Note deleted!'))
+		.then(() => {
+			res.json('Note deleted!');
+			console.log('> ' + req.user.username + ' deleted a note');
+		})
 		.catch(err => res.status(400).json('Error: ' + err));
 });
 
