@@ -15,7 +15,7 @@ router.route('/byuser/:id').get((req, res) => {
 router.route('/add').post((req, res) => {
 
 	const { userId, content } = req.body;
-	const title = req.body.title ? req.body.title : 'Untitled';
+	const title = req.body.title;
 
 	const newNote = new Note({
 		userId,

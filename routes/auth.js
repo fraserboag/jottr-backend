@@ -36,7 +36,7 @@ router.route('/signup').post((req, res) => {
 			res.status(500).json('Error: ' + err);
 		} else if (user) {
 			// username already used
-			res.status(400).json('A user with this username already exists');
+			res.status(400).json('A user with this email address already exists');
 		} else if (password !== password2) {
 			res.status(400).json('Passwords do not match');
 		} else {
