@@ -12,7 +12,7 @@ const port = process.env.PORT;
 
 // Connect to MongoDB
 const mongo_uri = process.env.MONGO_URI;
-mongoose.connect(mongo_uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true });
+mongoose.connect(mongo_uri, { useNewUrlParser: true, useCreateIndex: true, useUnifiedTopology: true }).catch(err => console.log(err));
 const connection = mongoose.connection;
 connection.once('open', () => { console.log('MongoDB Connected'); });
 
