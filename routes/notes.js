@@ -5,7 +5,7 @@ let Note = require('../models/note.model');
 router.route('/byuser/:id').get((req, res) => {
 	Note.find(({ userId: req.params.id })).sort({ updatedAt: -1 })
 		.then(notes => {
-			res.json(notes);
+			// res.json(notes);
 			console.log('> got notes for ' + req.user.username);
 		})
 		.catch(err => res.status(400).json('Error: ' + err));
